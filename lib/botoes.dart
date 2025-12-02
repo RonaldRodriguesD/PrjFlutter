@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Botoes extends StatelessWidget {
   const Botoes({required this.resp, required this.txt,super.key});
 
-  final VoidCallback resp;
+  final void Function() resp;
   final String txt;
 
   @override

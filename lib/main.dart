@@ -72,10 +72,10 @@ class HomeState extends State<Home> {
               style: const TextStyle(fontSize: 25),
             ),
             SizedBox(height: 20,),
-           ...((perguntas[indicePergunta]['respostas'] as List<String>)
-           .map((textoBootao) => Botoes(resp: responder, txt: textoBootao))
-           .toList()
-           ),
+            ...((perguntas[indicePergunta]['respostas'] as List<String>)
+            .map((textoBootao) => Botoes(resp: responder, txt: textoBootao))
+            .toList()
+            ),
           ],
         ),
       ),
