@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import './botoes.dart';
+import 'package:flutter/rendering.dart';
+import './lista_perguntas.dart';
+import './dados.dart';
+import './pergunta_respostas.dart';
 
 void main() {
   runApp(const PerguntasApp());
@@ -22,62 +25,51 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  final perguntas = [
-  {
-    'pergunta': 'Qual a sua cor favorita?',
-    'respostas': ['Verde', 'Amarelo', 'Vermelho', 'Outra'],
-  },
-  {
-    'pergunta': 'Qual o seu animal favorito?',
-    'respostas': ['Gato','Cachorro','Pássaro','Peixe','Outro'],
-  },
-  {
-    'pergunta': 'Qual é o seu time?',
-    'respostas': ['Palmeiras','Corinthians','São Paulo','Santos','Outro'],
-  },
-  {
-  'pergunta': 'Qual é sua linguagem de programação favorita',
-  'respostas': ['Python','Java','Dart','C','C++','Outro'],
-  },
-
-];
+  final dados = perguntasRespostas;
+  List respostas = [];
 
   var indicePergunta = 0;
 
-  void responder() {
+  void responder(String r) {
+    String p = dados[indicePergunta].pergunta;
+    respostas.add({'pergunta': p, 'resposta': r});
+    indicePergunta++;
+    setState(() {});
+  }
+
+  void reiniciar() {
     setState(() {
-      if (indicePergunta < perguntas.length - 1) {
-        indicePergunta++;
-      } else {
-        indicePergunta = 0;
-      }
+      indicePergunta = 0;
+      respostas = [];
     });
+  }
+
+  bool get temPergunta {
+    return indicePergunta < dados.length;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perguntas - Ronald', style: TextStyle(fontSize: 30), textAlign: TextAlign.center),
+        title: const Text(
+          'Perguntas - Ronald',
+          style: TextStyle(fontSize: 30),
+          textAlign: TextAlign.center,
+        ),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 58, 166, 255),
         toolbarHeight: 80,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            Text(
-              perguntas[indicePergunta]['pergunta'].toString(),
-              style: const TextStyle(fontSize: 25),
-            ),
-            SizedBox(height: 20,),
-            ...((perguntas[indicePergunta]['respostas'] as List<String>)
-            .map((textoBootao) => Botoes(resp: responder, txt: textoBootao))
-            .toList()
-            ),
-          ],
-        ),
+        child: temPergunta
+            ? ListaPerguntas(
+                indicePergunta: indicePergunta,
+                perguntas: dados,
+                responder: responder,
+              ) // lista perguntas
+            : null//Resultado(respostas, reiniciar),
       ),
     );
   }
