@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import './lista_perguntas.dart';
 import './dados.dart';
 import './pergunta_respostas.dart';
+import './resultado.dart';
 
 void main() {
   runApp(const PerguntasApp());
@@ -69,7 +70,7 @@ class HomeState extends State<Home> {
                 perguntas: dados,
                 responder: responder,
               ) // lista perguntas
-            : null//Resultado(respostas, reiniciar),
+            : Resultado(respostas, reiniciar),
       ),
     );
   }
