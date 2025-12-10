@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import './lista_perguntas.dart';
 import './dados.dart';
-import './pergunta_respostas.dart';
+//import './pergunta_respostas.dart';
 import './resultado.dart';
 
 void main() {

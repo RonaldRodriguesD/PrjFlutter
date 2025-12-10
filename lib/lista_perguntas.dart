@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import './pergunta_respostas.dart';
 import './botoes.dart';
