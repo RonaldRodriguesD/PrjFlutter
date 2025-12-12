@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import './lista_perguntas.dart';
-import './dados.dart';
-//import './pergunta_respostas.dart';
-import './resultado.dart';
+import 'dados.dart';
+import 'lista_perguntas.dart';
+import 'resultado.dart';
+
+import 'package:google_fonts/google_fonts.dart';
+
 
 void main() {
   runApp(const PerguntasApp());
@@ -14,7 +15,11 @@ class PerguntasApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: const Home());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: GoogleFonts.lato().fontFamily),
+      home: Home(),
+    );
   }
 }
 
@@ -25,15 +30,22 @@ class Home extends StatefulWidget {
   HomeState createState() => HomeState();
 }
 
-class HomeState extends State<Home> {
+class HomeState extends State<Home>  {
   final dados = perguntasRespostas;
   List respostas = [];
-
   var indicePergunta = 0;
+  var totalPontos = 0;
 
-  void responder(String r) {
+  @override
+  void initState() {
+    super.initState();
+    perguntasRespostas.shuffle();
+  }
+
+  void responder(String r, int ponto) {
     String p = dados[indicePergunta].pergunta;
-    respostas.add({'pergunta': p, 'resposta': r});
+    respostas.add({'pergunta': p, 'resposta': r, 'ponto': ponto});
+    totalPontos += ponto;
     indicePergunta++;
     setState(() {});
   }
@@ -41,7 +53,9 @@ class HomeState extends State<Home> {
   void reiniciar() {
     setState(() {
       indicePergunta = 0;
-      respostas = [];
+      totalPontos = 0;
+      respostas = []; 
+      perguntasRespostas.shuffle();
     });
   }
 
@@ -49,29 +63,27 @@ class HomeState extends State<Home> {
     return indicePergunta < dados.length;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Perguntas - Ronald',
-          style: TextStyle(fontSize: 30),
-          textAlign: TextAlign.center,
-        ),
+        title: const Text('Perguntas - Ronald', style: TextStyle(fontSize: 30)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 58, 166, 255),
+        backgroundColor: Color.fromARGB(255, 58, 84, 255),
         toolbarHeight: 80,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: temPergunta
+      backgroundColor: const Color.fromARGB(255, 131, 193, 255),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [ temPergunta
             ? ListaPerguntas(
                 indicePergunta: indicePergunta,
                 perguntas: dados,
                 responder: responder,
-              ) // lista perguntas
-            : Resultado(respostas, reiniciar),
-      ),
-    );
+              ) //ListaPerguntas
+            : Resultado(respostas, reiniciar, totalPontos),
+      ]),              
+    );    
   }
 }

@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
-import './itens.dart';
+import 'itens.dart';
 
 class Resultado extends StatelessWidget {
-  const Resultado(this.respostas, this.reiniciar, {super.key});
+  const Resultado(
+    this.respostas, 
+    this.reiniciar,
+    this.totalPontos, 
+    {super.key}
+  );
 
   final List respostas;
   final void Function() reiniciar;
+  final int totalPontos;
 
   @override
   Widget build(BuildContext context) {
+    final String mensagem = totalPontos == 10
+      ? "PARABÉNS, VOCÊ É UM GÊNIO!"
+      : totalPontos > 6
+      ? "APROVADO"
+      : totalPontos > 3
+      ? "RECUPERAÇÃO"
+      : "REPROVADO";
+
+
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -16,34 +31,48 @@ class Resultado extends StatelessWidget {
           Text(
             "Respostas",
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 25, 
               fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 58, 84, 255)
+              color: const Color.fromARGB(255, 58, 84, 255),
             ),
           ),
           ...respostas.map((resp) => Itens(
-              pergunta: resp['pergunta'],
-              resposta: resp['resposta'],
+              pergunta: resp['pergunta'], 
+              resposta: resp['resposta'],  
+              ponto: resp['ponto'],               
             )
           ),
+          SizedBox(height: 20),
+          Text(
+            "$mensagem!\nVocê obteve ${totalPontos.toString()} pontos",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 25,
+              color: totalPontos == 10
+                ? Colors.green
+                : totalPontos > 6
+                ? Colors.blue
+                : Colors.red,
+            ),                  
+          ),
+          SizedBox(height: 20),
+
           ElevatedButton(
-            onPressed: reiniciar,
+            onPressed: reiniciar, 
             style: ElevatedButton.styleFrom(
               minimumSize: Size(
                 double.infinity, double.minPositive
               ),
               padding: EdgeInsets.all(10),
-              backgroundColor: Color.fromARGB(255, 58, 84, 255),
-              foregroundColor: Color.fromARGB(255, 255, 255, 255),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero
-              ),
+                borderRadius: BorderRadius.zero, //
+              ), 
             ),
             child: Text(
               'Reiniciar',
-              style: TextStyle(
-                fontSize: 25
-              ),
+              style: TextStyle(fontSize: 25)
             ),
           ),
         ],
